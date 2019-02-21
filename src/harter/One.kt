@@ -40,7 +40,7 @@ fun Application.verifyOne(){
 
 fun Application.verifyTwo(){
 
-    install(CallLogging)
+    install(CallLogging)   //see resources/logbback.xml for format
     //install global handler, as the name suggests it shows "Status pages" (is this limited to this endpoint?)
     install(StatusPages){
         exception<Throwable>{e ->

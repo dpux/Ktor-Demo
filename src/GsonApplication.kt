@@ -32,7 +32,7 @@ fun main() {
 fun Application.gsonWork() {
     install(DefaultHeaders)
     install(Compression)
-    install(CallLogging)
+    install(CallLogging)   //see resources/logbback.xml for format
     install(ContentNegotiation) {
         gson {
             setDateFormat(DateFormat.LONG)

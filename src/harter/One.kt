@@ -18,18 +18,20 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlinx.coroutines.delay
 
 
 fun main() {
     embeddedServer(Netty, 8080){
-        verifyTwo()
+        verifyOne()
+//        verifyTwo()
     }.start(false)
 }
 
 fun Application.verifyOne(){
     routing {
         get {
-            call.respondText { "Hello" }
+            call.respondText { getHelloText() }    //NOTE: you can call a suspend fun directly!
         }
         post("/verify") {
             call.respond("Verified response")
@@ -37,6 +39,10 @@ fun Application.verifyOne(){
     }
 }
 
+suspend fun getHelloText(): String {
+    delay(3000)  //client/browser will show "waiting" for 3 secs - as if its a n/w delay
+    return "Deepak"
+}
 
 fun Application.verifyTwo(){
 

@@ -24,6 +24,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
 
+//https://ktor.io/servers/autoreload.html didnt work this time. try again later
 fun main() {
     embeddedServer(Netty, 8080){
         verifyOne()

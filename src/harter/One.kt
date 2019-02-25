@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.auth.*
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
@@ -31,6 +32,20 @@ fun main() {
 }
 
 fun Application.verifyOne(){
+
+
+    install(Authentication){
+        basic(name = "myauth1") {    //name helps different route use different auth style
+            realm = "Ktor Server"   //basic auth spec
+            validate { credentials ->
+                if (credentials.name == credentials.password) {
+                    UserIdPrincipal(credentials.name)     //UserIdPrincipal is not required - we can return any Principal or null
+                } else {
+                    Temp("haha")
+                }
+            }
+        }
+    }
     routing {
         get {
             call.respondText { getHelloText() }    //NOTE: you can call a suspend fun directly!
@@ -38,8 +53,18 @@ fun Application.verifyOne(){
         post("/verify") {
             call.respond("Verified response")
         }
+        authenticate("myauth1") {
+            get("/auth") {   //to authenticate a route, wrap in a auth block
+                val authData = call.authentication.principal
+                if(authData is Temp) call.respondText { authData.dd }
+                else call.respondText { authData.toString() }    //prints UserIdPrincipal(name=dd)
+            }
+        }
+
     }
 }
+
+data class Temp(val dd: String): Principal
 
 suspend fun getHelloText(): String {
     delay(3000)  //client/browser will show "waiting" for 3 secs - as if its a n/w delay

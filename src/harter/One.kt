@@ -18,6 +18,8 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
 
@@ -42,6 +44,15 @@ fun Application.verifyOne(){
 suspend fun getHelloText(): String {
     delay(3000)  //client/browser will show "waiting" for 3 secs - as if its a n/w delay
     return "Deepak"
+}
+
+suspend fun getResponse(verifyRequest: VerifyRequest): VerifyResponse? = coroutineScope {
+
+    val id = async {
+
+    }
+    id.await()
+    VerifyResponse("")
 }
 
 fun Application.verifyTwo(){
